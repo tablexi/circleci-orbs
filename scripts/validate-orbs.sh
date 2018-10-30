@@ -2,5 +2,5 @@
 
 for ORB in src/*; do
   echo "Validating $ORB ..."
-  circleci orb validate $ORB/orb.yml
+  circleci orb validate $ORB
 done
