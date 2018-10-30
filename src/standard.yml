@@ -29,10 +29,10 @@ commands:
           command: |
             mkdir -p ~/bin
             wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -O ~/bin/jq
-            wget https://gist.githubusercontent.com/acmcelwee/6f488f3d74b2734ca159d105d2927a9e/raw/9c30a35282ab357f1717a44275a4522935074a38/circle-lock.sh -O ~/bin/circle-lock
-            chmod +x ~/bin/jq ~/bin/circle-lock
+            wget https://raw.githubusercontent.com/bellkev/circle-lock-test/02d45b47f8bf8e6009aa7fca9e9a7257a77a0404/do-exclusively -O ~/bin/do-exclusively
+            chmod +x ~/bin/jq ~/bin/do-exclusively
             export PATH=$PATH:$HOME/bin
-            circle-lock --branch $CIRCLE_BRANCH echo "We have an exclusive lock on the current branch"
+            do-exclusively --branch $CIRCLE_BRANCH echo "We have an exclusive lock on the current branch"
   wait_for_db:
     description: "Wait for the database to be ready to accept connections"
     parameters:
