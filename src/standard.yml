@@ -117,7 +117,11 @@ jobs:
       mysql_db_type:
         type: boolean
         default: false
+      parallelism:
+        type: integer
+        default: 1
     executor: << parameters.executor >>
+    parallelism: << parameters.parallelism >>
     steps:
       - attach_workspace:
           at: ~/tmp
