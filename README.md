@@ -1,5 +1,12 @@
 # circleci-orbs
+
 A collection of standard Table XI CircleCI jobs/commands
+
+## Developing updates for this gem
+
+To push the current code into the `dev` version online:
+
+`circleci orb publish .circleci/config.yml tablexi/standard@dev:first`
 
 ## Publishing new versions of the orbs
 
@@ -11,13 +18,17 @@ To publish production-versions of the orbs, you must be a TXI Admin.
 
 For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
 
+Command to publish the current `dev` version:
+
+`circleci orb publish promote tablexi/standard@dev:first patch`
+
 ## Using these orbs
 
 To use these orbs, you first need to declare the orbs:
 ```yaml
 version: 2.1
 orbs:
-  tablexi: tablexi/standard@dev:first
+  tablexi: tablexi/standard@0.0.1
 ```
 
 Then you can specify the individual steps within your workflows:
@@ -50,7 +61,7 @@ A full example:
 ```yaml
 version: 2.1
 orbs:
-  tablexi: tablexi/standard@dev:first
+  tablexi: tablexi/standard@0.0.1
 executors:
   my_executor:
     # The working directory is important, so that we
