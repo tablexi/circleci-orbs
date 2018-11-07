@@ -145,3 +145,93 @@ This can help deal with resource constraints such as deploying to a common serve
 In order to accomplish this, the `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
 
 To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" that you have created in the Circle CI UI.
+
+## Upgrade Guide
+
+If you are upgrading from an existing CircleCI 2.0 config file, these are some of the steps that you'll want to take:
+
+1. Enable "Build Processing" within the CircleCI "Advanced Settings" tab.
+1. Replace your `references` with executors
+  - Old Style:
+```
+references:
+  default_job_config: &default_job_config
+    # The working directory is important, so that we
+    # install/cache everything relative to that location
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/ruby:2.3.7-node-browsers-legacy
+        environment:
+          RAILS_ENV: test
+          # Bundle paths are necessary so that the gems are installed within the workspace
+          # otherwise, they are installed in /usr/local
+          BUNDLE_PATH: ~/tmp/vendor/bundle
+          BUNDLE_APP_CONFIG: ~/tmp/vendor/bundle
+jobs:
+  build:
+    <<: *default_job_config
+    steps:
+      - checkout
+```
+  - New Style:
+```
+executors:
+  my_executor:
+    # The working directory is important, so that we
+    # install/cache everything relative to that location
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/ruby:2.3.7-node-browsers-legacy
+        environment:
+          RAILS_ENV: test
+          # Bundle paths are necessary so that the gems are installed within the workspace
+          # otherwise, they are installed in /usr/local
+          BUNDLE_PATH: ~/tmp/vendor/bundle
+          BUNDLE_APP_CONFIG: ~/tmp/vendor/bundle
+jobs:
+  build:
+    executor: my_executor
+    steps:
+      - checkout
+```
+
+1. Replace existing rspec/rubocop/etc jobs with tablexi/circleci-orbs jobs
+  - Old Style:
+```
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build
+      - rspec:
+          requires:
+            - build
+      - release_stage:
+          requires:
+            - rspec
+          filters:
+            branches:
+              only:
+                - develop
+```
+  - New Style:
+```
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build
+      - tablexi/rspec: # NOTE
+          executor:
+            name: my_executor
+          mysql_db_type: true
+          requires:
+            - build
+      - release_stage:
+          requires:
+            - tablexi/rspec # NOTE
+          filters:
+            branches:
+              only:
+                - develop
+```
