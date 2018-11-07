@@ -6,7 +6,7 @@ A collection of standard Table XI CircleCI jobs/commands
 
 To push the current code into the `dev` version online:
 
-`circleci orb publish .circleci/config.yml tablexi/standard@dev:first`
+`circleci orb publish src/standard.yml tablexi/standard@dev:first`
 
 ## Publishing new versions of the orbs
 
