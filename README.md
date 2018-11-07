@@ -136,6 +136,21 @@ workflows:
                 - master
 ```
 
+## Using a Mysql Database
+
+The rspec and check_db_schema jobs by default wait for a postgres db to be available.
+If you are running on a mysql database, pass the `mysql_db_type: true` parameter.
+
+E.g.
+```
+- tablexi/check_db_schema:
+    executor:
+      name: my_executor
+    mysql_db_type: true
+    requires:
+      - build
+```
+
 ## Using the `wait_for_other_builds` command
 
 The `wait_for_other_builds` command can be used in order to ensure that there are no earlier builds running in CI when this build is running.
