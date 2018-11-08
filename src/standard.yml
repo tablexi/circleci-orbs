@@ -69,8 +69,9 @@ jobs:
           mysql_db_type: << parameters.mysql_db_type >>
           executor: << parameters.executor >>
       - run: bundle exec rake db:drop db:create db:migrate RAILS_ENV=test
-      # # check that the schema.rb is the same result
-      - run: git diff --exit-code db/schema.rb
+      # # check that the schema.rb/structure.sql is the same result
+      - run: if [ -e db/schema.rb ]; then git diff --exit-code db/schema.rb; fi
+      - run: if [ -e db/structure.sql ]; then git diff --exit-code db/structure.sql; fi
 
   rubocop:
     parameters:
@@ -131,7 +132,19 @@ jobs:
 
       # Setup DB in this job, because it cannot be shared through the attach_workspace
       - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+
+      # Install the database library, so that we can run rake db:structure:load
+      - when:
+          condition: << parameters.mysql_db_type >>
+          steps:
+            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y mysql-client; fi
+      - unless:
+          condition: << parameters.mysql_db_type >>
+          steps:
+            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y postgresql-client; fi
+
+      - run: if [ -e db/schema.rb ]; then bundle exec rake db:schema:load; fi
+      - run: if [ -e db/structure.sql ]; then bundle exec rake db:structure:load; fi
 
       # Run rspec in parallel
       - run:
