@@ -132,6 +132,17 @@ jobs:
 
       # Setup DB in this job, because it cannot be shared through the attach_workspace
       - run: bundle exec rake db:create
+
+      # Install the database library, so that we can run rake db:structure:load
+      - when:
+          condition: << parameters.mysql_db_type >>
+          steps:
+            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y mysql-client; fi
+      - unless:
+          condition: << parameters.mysql_db_type >>
+          steps:
+            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y postgresql-client; fi
+
       - run: if [ -e db/schema.rb ]; then bundle exec rake db:schema:load; fi
       - run: if [ -e db/structure.sql ]; then bundle exec rake db:structure:load; fi
 
