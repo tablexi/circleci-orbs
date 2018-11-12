@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added Upgrade guide to README
+- Added Upgrade guide to README (#6)
+- Added capability for `check_db_schema` and `rspec` jobs to handle structure.sql schema dumps (#4)
 
 ### Changed
 
@@ -16,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed publish `dev:first` command in README
+- Fixed publish `dev:first` command in README (#5)
 
 
 ## [0.0.1] - 2018-10-30
