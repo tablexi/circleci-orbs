@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2018-12-21
+
 ### Added
 
 - Added COMMAND: tablexi/load_db_schema, to allow loading schema/structure

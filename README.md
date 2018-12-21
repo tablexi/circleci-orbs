@@ -28,7 +28,7 @@ To use these orbs, you first need to declare the orbs:
 ```yaml
 version: 2.1
 orbs:
-  tablexi: tablexi/standard@0.0.1
+  tablexi: tablexi/standard@0.0.3
 ```
 
 Then you can specify the individual steps within your workflows:
@@ -61,7 +61,7 @@ A full example:
 ```yaml
 version: 2.1
 orbs:
-  tablexi: tablexi/standard@0.0.1
+  tablexi: tablexi/standard@0.0.3
 executors:
   my_executor:
     # The working directory is important, so that we
