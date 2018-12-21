@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added COMMAND: tablexi/load_db_schema, to allow loading schema/structure
+- Added JOB: tablexi/teaspoon, to run teaspoon specs
+
+### Changed
+
+- Enhanced JOB: tablexi/rspec, now takes an optional 'report_coverage' boolean, to send results to code climate with the 'report_coverage' tool
+
 ## [0.0.2] - 2018-11-12
 
 ### Added

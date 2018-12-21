@@ -51,6 +51,28 @@ commands:
           condition: << parameters.mysql_db_type >>
           steps:
             - run: dockerize -wait tcp://localhost:5432 -timeout 2m
+  load_db_schema:
+    description: "Load the database schema, no matter the db type"
+    parameters:
+      executor:
+        type: executor
+        default: default_executor
+      mysql_db_type:
+        type: boolean
+        default: false
+    steps:
+      # Install the database library, so that we can run rake db:structure:load
+      - when:
+          condition: << parameters.mysql_db_type >>
+          steps:
+            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y mysql-client; fi
+      - unless:
+          condition: << parameters.mysql_db_type >>
+          steps:
+            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y postgresql-client; fi
+
+      - run: if [ -e db/schema.rb ]; then bundle exec rake db:schema:load; fi
+      - run: if [ -e db/structure.sql ]; then bundle exec rake db:structure:load; fi
 jobs:
   check_db_schema:
     description: check to ensure that we can migrate from scratch
@@ -110,7 +132,7 @@ jobs:
       - run: bundle exec haml-lint
 
   rspec:
-    description: Run Rspec after waiting for db and doing db:schema:load
+    description: Run Rspec after waiting for db and loading schema
     parameters:
       executor:
         type: executor
@@ -121,6 +143,9 @@ jobs:
       parallelism:
         type: integer
         default: 1
+      report_coverage:
+        type: boolean
+        default: false
     executor: << parameters.executor >>
     parallelism: << parameters.parallelism >>
     steps:
@@ -133,18 +158,9 @@ jobs:
       # Setup DB in this job, because it cannot be shared through the attach_workspace
       - run: bundle exec rake db:create
 
-      # Install the database library, so that we can run rake db:structure:load
-      - when:
-          condition: << parameters.mysql_db_type >>
-          steps:
-            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y mysql-client; fi
-      - unless:
-          condition: << parameters.mysql_db_type >>
-          steps:
-            - run: if [ -e db/structure.sql ]; then sudo apt-get install -y postgresql-client; fi
-
-      - run: if [ -e db/schema.rb ]; then bundle exec rake db:schema:load; fi
-      - run: if [ -e db/structure.sql ]; then bundle exec rake db:structure:load; fi
+      - load_db_schema:
+          mysql_db_type: << parameters.mysql_db_type >>
+          executor: << parameters.executor >>
 
       # Run rspec in parallel
       - run:
@@ -160,3 +176,44 @@ jobs:
       # Save test results for timing analysis
       - store_test_results:
           path: test_results
+
+      - when:
+          condition: << parameters.report_coverage >>
+          steps:
+            - store_artifacts:
+               path: coverage/.resultset.json
+               prefix: coverage
+
+            - deploy:
+                name: Merge and copy coverage data
+                command: bundle exec report_coverage --branch develop
+  teaspoon:
+    parameters:
+      executor:
+        type: executor
+        default: default_executor
+      mysql_db_type:
+        type: boolean
+        default: false
+    executor: << parameters.executor >>
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+
+      - wait_for_db:
+          mysql_db_type: << parameters.mysql_db_type >>
+          executor: << parameters.executor >>
+
+      # Setup DB in this job, because it cannot be shared through the attach_workspace
+      - run: bundle exec rake db:create
+
+      - load_db_schema:
+          mysql_db_type: << parameters.mysql_db_type >>
+          executor: << parameters.executor >>
+
+      - run: mkdir -p ~/teaspoon
+      - run:
+          command: |
+            bundle exec teaspoon \
+            --suppress-log \
+            --format junit > ~/teaspoon/teaspoon.xml
