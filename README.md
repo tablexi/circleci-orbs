@@ -2,25 +2,26 @@
 
 A collection of standard Table XI CircleCI jobs/commands
 
-## Developing updates for this gem
+## What do these orbs provide
 
-To push the current code into the `dev` version online:
+By including the tablexi/standard orb, you can use the common jobs/commands which are in use in many of our projects.
 
-`circleci orb publish src/standard.yml tablexi/standard@dev:first`
+By using orbs, any improvements/learnings which we make on one project, can be more easily distributed to the other projects by way of upgrading the orb definition, and incrementing the in-use orb version on the various projects.
 
-## Publishing new versions of the orbs
+These orbs provide the following Jobs:
 
-The `circleci` command-line tool is used to publish versions of the orbs.
+- check_db_schema: check to ensure that we can migrate from scratch and end up with the schema.rb
+- rubocop: run the rubocop command
+- bundle_audit: run the bundle-audit command
+- haml_lint: run the haml-lint command
+- rspec: Run Rspec after waiting for db and loading schema
+- teaspoon: Run teaspoon after waiting for db and loading schema
 
-All Table XI members can publish development versions of the orbs.
+These orbs provide the following commands:
 
-To publish production-versions of the orbs, you must be a TXI Admin.
-
-For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
-
-Command to publish the current `dev` version:
-
-`circleci orb publish promote tablexi/standard@dev:first patch`
+- wait_for_other_builds: Ensure no earlier numbered job (of this branch) is running
+- wait_for_db: Wait for the database to be ready to accept connections
+- load_db_schema: Load the database schema, no matter the db type
 
 ## Using these orbs
 
@@ -30,6 +31,8 @@ version: 2.1
 orbs:
   tablexi: tablexi/standard@0.0.3
 ```
+
+You also must enable "Build Processing" within the CircleCI "Advanced Settings" tab.
 
 Then you can specify the individual steps within your workflows:
 ```yaml
@@ -56,6 +59,71 @@ workflows:
             only:
               - develop
 ```
+
+## Using a Mysql Database
+
+The rspec and check_db_schema jobs by default wait for a postgres db to be available.
+If you are running on a mysql database, pass the `mysql_db_type: true` parameter.
+
+E.g.
+```
+- tablexi/check_db_schema:
+    executor:
+      name: my_executor
+    mysql_db_type: true
+    requires:
+      - build
+```
+
+## Adjusting parallelism
+
+The rspec job runs with parallelism 1 by default.
+If you want to increase the parallelism, you can set it as a parameter.
+E.g.
+
+```
+- tablexi/rspec:
+    executor:
+      name: my_executor
+    mysql_db_type: true
+    parallelism: 4
+    requires:
+      - build
+```
+
+## Validating your configuration.
+
+If you install the `circleci` commandline tool, you can validate that your usage of the orbs is correct, without having to upload the file to CircleCI.
+
+```
+circleci config validate .circleci/config.yml
+```
+
+## Using the `wait_for_other_builds` command
+
+The `wait_for_other_builds` command can be used in order to ensure that there are no earlier builds running in CI when this build is running.
+
+This can help deal with resource constraints such as deploying to a common server.
+
+In order to accomplish this, the `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
+
+To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("Status" type is sufficient) that you have created in the Circle CI UI.
+
+### Example use of `wait_for_other_builds`
+
+```
+release_stage:
+  executor: my_executor
+  steps:
+    - attach_workspace:
+        at: ~/tmp
+
+    - tablexi/wait_for_other_builds
+
+    - run: bundle exec cap stage deploy
+```
+
+## Example
 
 A full example:
 ```yaml
@@ -135,31 +203,6 @@ workflows:
               only:
                 - master
 ```
-
-## Using a Mysql Database
-
-The rspec and check_db_schema jobs by default wait for a postgres db to be available.
-If you are running on a mysql database, pass the `mysql_db_type: true` parameter.
-
-E.g.
-```
-- tablexi/check_db_schema:
-    executor:
-      name: my_executor
-    mysql_db_type: true
-    requires:
-      - build
-```
-
-## Using the `wait_for_other_builds` command
-
-The `wait_for_other_builds` command can be used in order to ensure that there are no earlier builds running in CI when this build is running.
-
-This can help deal with resource constraints such as deploying to a common server.
-
-In order to accomplish this, the `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
-
-To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" that you have created in the Circle CI UI.
 
 ## Upgrade Guide
 
@@ -250,3 +293,44 @@ workflows:
               only:
                 - develop
 ```
+
+1. Replace existing `shell` references with `run` references:
+  - Old Style:
+```
+      - type: shell
+        command: |
+          bundle exec rspec --profile 10
+```
+  - New Style: **Note**: The indentation of `command` and command lines are also changed.
+```
+      - run:
+          command: |
+            bundle exec rspec --profile 10
+```
+
+1. Validate that your changes are valid. (optional step)
+
+```
+circleci config validate .circleci/config.yml
+```
+
+## Developing updates for this gem
+
+To push the current code into the `dev` version online:
+
+`circleci orb publish src/standard.yml tablexi/standard@dev:first`
+
+## Publishing new versions of the orbs
+
+The `circleci` command-line tool is used to publish versions of the orbs.
+
+All Table XI members can publish development versions of the orbs.
+
+To publish production-versions of the orbs, you must be a TXI Admin.
+
+For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
+
+Command to publish the current `dev` version:
+
+`circleci orb publish promote tablexi/standard@dev:first patch`
+
