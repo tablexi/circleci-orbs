@@ -143,6 +143,20 @@ In order to accomplish this, the `wait_for_other_builds` command uses the Circle
 
 To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("Status" type is sufficient) that you have created in the Circle CI UI.
 
+### Example use of `wait_for_other_builds`
+
+```
+release_stage:
+  executor: my_executor
+  steps:
+    - attach_workspace:
+        at: ~/tmp
+
+    - tablexi/wait_for_other_builds
+
+    - run: bundle exec cap stage deploy
+```
+
 ## Upgrade Guide
 
 If you are upgrading from an existing CircleCI 2.0 config file, these are some of the steps that you'll want to take:
