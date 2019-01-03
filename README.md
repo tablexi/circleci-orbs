@@ -2,26 +2,6 @@
 
 A collection of standard Table XI CircleCI jobs/commands
 
-## Developing updates for this gem
-
-To push the current code into the `dev` version online:
-
-`circleci orb publish src/standard.yml tablexi/standard@dev:first`
-
-## Publishing new versions of the orbs
-
-The `circleci` command-line tool is used to publish versions of the orbs.
-
-All Table XI members can publish development versions of the orbs.
-
-To publish production-versions of the orbs, you must be a TXI Admin.
-
-For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
-
-Command to publish the current `dev` version:
-
-`circleci orb publish promote tablexi/standard@dev:first patch`
-
 ## Using these orbs
 
 To use these orbs, you first need to declare the orbs:
@@ -30,6 +10,8 @@ version: 2.1
 orbs:
   tablexi: tablexi/standard@0.0.3
 ```
+
+You also must enable "Build Processing" within the CircleCI "Advanced Settings" tab.
 
 Then you can specify the individual steps within your workflows:
 ```yaml
@@ -159,7 +141,7 @@ This can help deal with resource constraints such as deploying to a common serve
 
 In order to accomplish this, the `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
 
-To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" that you have created in the Circle CI UI.
+To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("Status" type is sufficient) that you have created in the Circle CI UI.
 
 ## Upgrade Guide
 
@@ -270,3 +252,24 @@ workflows:
 ```
 circleci config validate .circleci/config.yml
 ```
+
+## Developing updates for this gem
+
+To push the current code into the `dev` version online:
+
+`circleci orb publish src/standard.yml tablexi/standard@dev:first`
+
+## Publishing new versions of the orbs
+
+The `circleci` command-line tool is used to publish versions of the orbs.
+
+All Table XI members can publish development versions of the orbs.
+
+To publish production-versions of the orbs, you must be a TXI Admin.
+
+For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
+
+Command to publish the current `dev` version:
+
+`circleci orb publish promote tablexi/standard@dev:first patch`
+
