@@ -107,7 +107,7 @@ This can help deal with resource constraints such as deploying to a common serve
 
 In order to accomplish this, the `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
 
-To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("All" access is required) that you have created in the Circle CI UI.
+To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("Build Artifact" access is required) that you have created in the Circle CI UI.
 
 ### Example use of `wait_for_other_builds`
 
