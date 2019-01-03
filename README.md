@@ -250,3 +250,23 @@ workflows:
               only:
                 - develop
 ```
+
+1. Replace existing `shell` references with `run` references:
+  - Old Style:
+```
+      - type: shell
+        command: |
+          bundle exec rspec --profile 10
+```
+  - New Style: **Note**: The indentation of `command` and command lines are also changed.
+```
+      - run:
+          command: |
+            bundle exec rspec --profile 10
+```
+
+1. Validate that your changes are valid. (optional step)
+
+```
+circleci config validate .circleci/config.yml
+```
