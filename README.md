@@ -107,7 +107,7 @@ This can help deal with resource constraints such as deploying to a common serve
 
 In order to accomplish this, the `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
 
-To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("Status" type is sufficient) that you have created in the Circle CI UI.
+To do this, you must first specify a `CIRCLE_TOKEN` in the project's Environment Variables, and set this to an "API Key" ("All" access is required) that you have created in the Circle CI UI.
 
 ### Example use of `wait_for_other_builds`
 
@@ -122,6 +122,17 @@ release_stage:
 
     - run: bundle exec cap stage deploy
 ```
+
+### Troubleshooting common errors
+
+If you have an error like
+
+```jq: error (at <stdin>:0): Cannot index string with string "build_num"```
+
+You probably need to recreate your `CIRCLE_TOKEN` API token.
+
+Be sure that it's set with the correct permissions.
+
 
 ## Example
 
