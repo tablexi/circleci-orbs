@@ -73,6 +73,26 @@ commands:
 
       - run: if [ -e db/schema.rb ]; then bundle exec rake db:schema:load; fi
       - run: if [ -e db/structure.sql ]; then bundle exec rake db:structure:load; fi
+  prepare_database:
+    description: "Wait for DB, the create and Load the database schema"
+    parameters:
+      executor:
+        type: executor
+        default: default_executor
+      mysql_db_type:
+        type: boolean
+        default: false
+    steps:
+      - wait_for_db:
+          mysql_db_type: << parameters.mysql_db_type >>
+          executor: << parameters.executor >>
+
+      - run: bundle exec rake db:create
+
+      - load_db_schema:
+          mysql_db_type: << parameters.mysql_db_type >>
+          executor: << parameters.executor >>
+
 jobs:
   check_db_schema:
     description: check to ensure that we can migrate from scratch and end up with the schema.rb
@@ -154,14 +174,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/tmp
-      - wait_for_db:
-          mysql_db_type: << parameters.mysql_db_type >>
-          executor: << parameters.executor >>
-
-      # Setup DB in this job, because it cannot be shared through the attach_workspace
-      - run: bundle exec rake db:create
-
-      - load_db_schema:
+      - prepare_database:
           mysql_db_type: << parameters.mysql_db_type >>
           executor: << parameters.executor >>
 
@@ -204,14 +217,7 @@ jobs:
       - attach_workspace:
           at: ~/tmp
 
-      - wait_for_db:
-          mysql_db_type: << parameters.mysql_db_type >>
-          executor: << parameters.executor >>
-
-      # Setup DB in this job, because it cannot be shared through the attach_workspace
-      - run: bundle exec rake db:create
-
-      - load_db_schema:
+      - prepare_database:
           mysql_db_type: << parameters.mysql_db_type >>
           executor: << parameters.executor >>
 

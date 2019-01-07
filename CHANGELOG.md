@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added COMMAND: tablexi/prepare_database, to allow performing wait_for_db, db:create, and load_db_schema as a single step
+
 ### Changed
 
 - Improved README documenting how to apply these changes to an existing project

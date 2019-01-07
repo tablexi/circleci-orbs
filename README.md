@@ -22,6 +22,7 @@ These orbs provide the following commands:
 - wait_for_other_builds: Ensure no earlier numbered job (of this branch) is running
 - wait_for_db: Wait for the database to be ready to accept connections
 - load_db_schema: Load the database schema, no matter the db type
+- prepare_database: Perform wait_for_db, create the db, and load_db_schema steps as one command
 
 ## Using these orbs
 
