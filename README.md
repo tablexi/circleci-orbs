@@ -2,26 +2,28 @@
 
 A collection of standard Table XI CircleCI jobs/commands
 
+https://circleci.com/orbs/registry/orb/tablexi/standard
+
 ## What do these orbs provide
 
-By including the tablexi/standard orb, you can use the common jobs/commands which are in use in many of our projects.
+By including the `tablexi/standard` orb, you can use the common jobs/commands which are in use in many of our projects.
 
 By using orbs, any improvements/learnings which we make on one project, can be more easily distributed to the other projects by way of upgrading the orb definition, and incrementing the in-use orb version on the various projects.
 
 These orbs provide the following Jobs:
 
-- check_db_schema: check to ensure that we can migrate from scratch and end up with the schema.rb
-- rubocop: run the rubocop command
-- bundle_audit: run the bundle-audit command
-- haml_lint: run the haml-lint command
-- rspec: Run Rspec after waiting for db and loading schema
-- teaspoon: Run teaspoon after waiting for db and loading schema
+- `check_db_schema`: check to ensure that we can migrate from scratch and end up with the schema.rb
+- `rubocop`: run the rubocop command
+- `bundle_audit`: run the bundle-audit command
+- `haml_lint`: run the haml-lint command
+- `rspec`: Run Rspec after waiting for db and loading schema
+- `teaspoon`: Run teaspoon after waiting for db and loading schema
 
 These orbs provide the following commands:
 
-- wait_for_other_builds: Ensure no earlier numbered job (of this branch) is running
-- wait_for_db: Wait for the database to be ready to accept connections
-- load_db_schema: Load the database schema, no matter the db type
+- `wait_for_other_builds`: Ensure no earlier numbered job (of this branch) is running
+- `wait_for_db`: Wait for the database to be ready to accept connections
+- `load_db_schema`: Load the database schema, no matter the db type
 
 ## Using these orbs
 
@@ -91,13 +93,16 @@ E.g.
       - build
 ```
 
-## Validating your configuration.
+## Validating your configuration
 
-If you install the `circleci` commandline tool, you can validate that your usage of the orbs is correct, without having to upload the file to CircleCI.
+We recommend installing the `circleci` command-line tool.
 
-```
-circleci config validate .circleci/config.yml
-```
+    brew install circleci
+
+So you can validate if your usage of orbs is correct, without having to check-in your config file.
+
+    circleci config validate .circleci/config.yml
+
 
 ## Using the `wait_for_other_builds` command
 
@@ -353,4 +358,3 @@ For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/mas
 Command to publish the current `dev` version:
 
 `circleci orb publish promote tablexi/standard@dev:first patch`
-
