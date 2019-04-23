@@ -93,13 +93,16 @@ E.g.
       - build
 ```
 
-## Validating your configuration.
+## Validating your configuration
 
-If you install the `circleci` command-line tool, you can validate that your usage of the orbs is correct, without having to upload the file to CircleCI.
+We recommend installing the `circleci` command-line tool.
 
-```
-circleci config validate .circleci/config.yml
-```
+    brew install circleci
+
+So you can validate if your usage of orbs is correct, without having to check-in your config file.
+
+    circleci config validate .circleci/config.yml
+
 
 ## Using the `wait_for_other_builds` command
 
