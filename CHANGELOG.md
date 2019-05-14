@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- none
+
+## [0.0.4] - 2019-05-14
+
 ### Changed
 
 - Improved README documenting how to apply these changes to an existing project
+- Perform apt-get update before trying to install mysql-client or postgres tools
 
 ## [0.0.3] - 2018-12-21
 

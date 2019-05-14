@@ -355,6 +355,8 @@ To publish production-versions of the orbs, you must be a TXI Admin.
 
 For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
 
+Before publishing, please consider updating the CHANGELOG.md.
+
 Command to publish the current `dev` version:
 
 `circleci orb publish promote tablexi/standard@dev:first patch`
