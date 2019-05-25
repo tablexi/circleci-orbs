@@ -113,12 +113,13 @@ This can help deal with resource constraints such as deploying to a common serve
 The `wait_for_other_builds` command uses the CircleCI API in order to see whether any lower-numbered jobs are executing on this branch.
 
 In order to accomplish this:
-1) Create an API Token from https://circleci.com/gh/tablexi/<project>/edit#api
+1) Create an API Token from `https://circleci.com/gh/tablexi/<project>/edit#api`
+  - On the "API Permissions" page
   - Choose "Create Token"
   - Choose "Scope: "Build Artifact"
   - set the "Token Label" to anything you want.
 2) Copy the value of the API token created above
-3) In the Environment Variables page (https://circleci.com/gh/tablexi/<project>/edit#env-vars)
+3) In the Environment Variables page (`https://circleci.com/gh/tablexi/<project>/edit#env-vars`)
   - Choose "Add Variable"
   - Name: "CIRCLE_TOKEN"
   - Value: <copied from previous step>
