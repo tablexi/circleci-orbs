@@ -114,12 +114,16 @@ jobs:
       executor:
         type: executor
         default: default_executor
+      ignored_cves:
+        type: string
+        default: ""
 
     executor: << parameters.executor >>
     steps:
       - attach_workspace:
           at: ~/tmp
-      - run: bundle exec bundle-audit
+      - run: bundle exec bundle-audit update
+      - run: bundle exec bundle-audit --ignore << parameters.ignored_cves >>
 
   haml_lint:
     description: run the haml-lint command
