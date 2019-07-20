@@ -123,7 +123,15 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: bundle exec bundle-audit update
-      - run: bundle exec bundle-audit --ignore << parameters.ignored_cves >>
+      - when:
+          condition: << parameters.ignored_cves >>
+          steps:
+            - run: bundle exec bundle-audit --ignore << parameters.ignored_cves >>
+      - unless:
+          condition: << parameters.ignored_cves >>
+          steps:
+            # bundle-audit doesn't like it if you use --ignore with NO ignored entries
+            - run: bundle exec bundle-audit
 
   haml_lint:
     description: run the haml-lint command
