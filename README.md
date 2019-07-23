@@ -31,7 +31,7 @@ To use these orbs, you first need to declare the orbs:
 ```yaml
 version: 2.1
 orbs:
-  tablexi: tablexi/standard@0.0.3
+  tablexi: tablexi/standard@0.0.5
 ```
 
 You also must enable "Build Processing" within the CircleCI "Advanced Settings" tab.
@@ -155,7 +155,7 @@ A full example:
 ```yaml
 version: 2.1
 orbs:
-  tablexi: tablexi/standard@0.0.3
+  tablexi: tablexi/standard@0.0.5
 executors:
   my_executor:
     # The working directory is important, so that we
