@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- none
+- Allow specifying `ignored_cves` argument to `bundle_audit` job
+- Update bundle-audit vulnerabilities db before checking project
 
 ## [0.0.4] - 2019-05-14
 
