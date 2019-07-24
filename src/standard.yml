@@ -123,7 +123,13 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: bundle exec bundle-audit update
-      - run: bundle exec bundle-audit --ignore << parameters.ignored_cves >>
+      # If a .bundlerauditignore file EXISTS and HAS CONTENTS
+      # then we read the CVEs from this file and pass them to the bundler-audit command
+      # Otherwise, we invoke bundler-audit without --ignore args.
+      #
+      # Based upno https://github.com/rubysec/ruby-advisory-db/pull/390#issuecomment-509186921
+      # and https://github.com/rubysec/bundler-audit/pull/215
+      - run: if [ `egrep "^[^#]" .bundlerauditignore | cut -f1 | wc -l` -ne 0 ]; then egrep "^[^#]" .bundlerauditignore | cut -f1 | xargs bundle exec bundle-audit --ignore; else bundle exec bundle-audit; fi
 
   haml_lint:
     description: run the haml-lint command
