@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2019-07-24
+
 - Remove `ignored_cves` option, replacing it with `.bundlerauditignore` file support.
 
 ## [0.0.5] - 2019-07-23
