@@ -65,7 +65,7 @@ commands:
       - when:
           condition: << parameters.mysql_db_type >>
           steps:
-            - run: if [ -e db/structure.sql ]; then sudo apt-get update && sudo apt-get install -y mysql-client; fi
+            - run: if [ -e db/structure.sql ]; then sudo apt-get update && sudo apt-get install -y default-mysql-client; fi
       - unless:
           condition: << parameters.mysql_db_type >>
           steps:
