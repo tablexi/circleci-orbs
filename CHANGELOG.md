@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2019-08-02
+
 - update mysql-client target to be default-mysql-client, so that more linux distros can find it.
 
 ## [0.0.6] - 2019-07-24
