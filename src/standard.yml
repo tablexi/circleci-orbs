@@ -114,9 +114,6 @@ jobs:
       executor:
         type: executor
         default: default_executor
-      ignored_cves:
-        type: string
-        default: ""
 
     executor: << parameters.executor >>
     steps:
