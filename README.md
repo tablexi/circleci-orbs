@@ -103,10 +103,50 @@ So you can validate if your usage of orbs is correct, without having to check-in
 
     circleci config validate .circleci/config.yml
 
+## What is each job, and how to use it
+
+### check_db_schema
+
+Check to ensure that we can migrate from scratch and end up with the schema.rb.
+
+This takes an optional parameter of `mysql_db_type`
+
+### rubocop
+
+Run the rubocop command with the default `.rubocop.yml` configuration file
+
+### bundle_audit
+
+Run the bundle-audit command. This checks the ruby-advisory-db for any gems
+which have known security issues, and fails the job if any exist.
+
+Some project have gems in use which have known issues, but we have examined
+the security bulletin and determined that we are NOT susceptible to the problem.
+
+We can create a `.bundlerauditignore` which specifies the CVEs which we should ignore
+(one per line).
+
+### haml_lint
+
+Run the haml-lint command to check the haml for formatting guidelines
+
+### rspec
+
+Run Rspec after waiting for db and loading schema.
+
+This takes an optional parameter of `mysql_db_type`, and `parallelism`.
+This takes an optional parameter of `report_coverage` which will use the (report_coverage)[https://github.com/rdunlop/codeclimate_circle_ci_coverage] gem to send rspec coverage results to CodeClimate.
+
+### teaspoon
+
+Run teaspoon after waiting for db and loading schema.
+
+This takes an optional parameter of `mysql_db_type`
+
 
 ## Using the `wait_for_other_builds` command
 
-The `wait_for_other_builds` command can be used in order to ensure that there are no earlier builds running in CI when this build is running.
+The `wait_for_other_builds` command can be used in a joqb in order to ensure that there are no earlier builds running in CI when this build is running.
 
 This can help deal with resource constraints such as deploying to a common server.
 
