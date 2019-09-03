@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Remove default_executor from orb. This will force all users to specify an executor (which is a good thing)
+
 ## [0.0.7] - 2019-08-02
 
 - update mysql-client target to be default-mysql-client, so that more linux distros can find it.
