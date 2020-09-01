@@ -120,6 +120,9 @@ jobs:
     parameters:
       executor:
         type: executor
+      store_screenshots:
+        type: boolean
+        default: false
       mysql_db_type:
         type: boolean
         default: false
@@ -159,6 +162,11 @@ jobs:
       # Save test results for timing analysis
       - store_test_results:
           path: test_results
+      - when:
+          condition: << parameters.store_screenshots >>
+          steps:
+            - store_artifacts:
+              path: tmp/screenshots
 
       - when:
           condition: << parameters.report_coverage >>
