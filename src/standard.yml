@@ -122,7 +122,7 @@ jobs:
         type: executor
       store_screenshots:
         type: boolean
-        default: false
+        default: true
       mysql_db_type:
         type: boolean
         default: false
@@ -163,7 +163,10 @@ jobs:
       - store_test_results:
           path: test_results
       - when:
-          condition: << parameters.store_screenshots >>
+          condition:
+            and:
+              - << parameters.store_screenshots >>
+              - not: << parameters.report_coverage >>
           steps:
             - store_artifacts:
               path: tmp/screenshots
