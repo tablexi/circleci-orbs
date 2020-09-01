@@ -163,10 +163,7 @@ jobs:
       - store_test_results:
           path: test_results
       - when:
-          condition:
-            and:
-              - << parameters.store_screenshots >>
-              - not: << parameters.report_coverage >>
+          condition: << parameters.store_screenshots >>
           steps:
             - store_artifacts:
               path: tmp/screenshots
