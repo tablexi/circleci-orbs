@@ -135,6 +135,7 @@ Run the haml-lint command to check the haml for formatting guidelines
 Run Rspec after waiting for db and loading schema.
 
 This takes an optional parameter of `mysql_db_type`, and `parallelism`.
+This takes an optional parameter of `store_screenshots`, which will allow access to screenshots of failed CI runs.
 This takes an optional parameter of `report_coverage` which will use the (report_coverage)[https://github.com/rdunlop/codeclimate_circle_ci_coverage] gem to send rspec coverage results to CodeClimate.
 
 ### teaspoon
