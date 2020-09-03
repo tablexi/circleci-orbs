@@ -166,7 +166,7 @@ jobs:
           condition: << parameters.store_screenshots >>
           steps:
             - store_artifacts:
-              path: tmp/screenshots
+               path: tmp/screenshots
 
       - when:
           condition: << parameters.report_coverage >>
