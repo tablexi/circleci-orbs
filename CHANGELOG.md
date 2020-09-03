@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.9] - 2020-09-03
+
+- Fix typo in indentation of new tmp/screenshots artifact directive
+
 ## [0.0.8] - 2020-09-02
 
 - Remove default_executor from orb. This will force all users to specify an executor (which is a good thing)
