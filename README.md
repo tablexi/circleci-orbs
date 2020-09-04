@@ -383,9 +383,36 @@ circleci config validate .circleci/config.yml
 
 ## Developing updates for this gem
 
+There are 2 ways to validate and test changes to this orb.
+
+### Publishing the orb as a dev version
+
 To push the current code into the `dev` version online:
 
 `circleci orb publish src/standard.yml tablexi/standard@dev:first`
+
+You can then test/validate by using the orb in your app's `config.yml`:
+
+```
+orbs:
+  tablexi: tablexi/standard@dev:first
+```
+
+### Using config packing to make it an inline orb
+- Copy your app's `.circleci/config.yml` to `src/config.yml`
+- Add `orbs`/`tablexi` keys to the top level of `src/standard.yml`:
+  ```
+  orbs:
+    tablexi:
+      description: "A set of standard steps which we use for projects at Table XI"
+      ...
+  ```
+- To validate, run `circleci config pack src | circleci config validate -`
+
+More info:
+- https://circleci.com/docs/2.0/orb-author/#writing-inline-orbs
+- https://circleci.com/docs/2.0/local-cli/#packing-a-config
+- https://circleci.com/docs/2.0/testing-orbs/#expansion-testing
 
 ## Publishing new versions of the orbs
 
