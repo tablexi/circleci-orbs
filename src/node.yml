@@ -1,0 +1,14 @@
+description: "A set of standard steps for nodejs apps which we use for projects at Table XI"
+version: 2.1
+jobs:
+  lint:
+    parameters:
+      node-version:
+        type: string
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:<< parameters.node-version >>
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run lint
