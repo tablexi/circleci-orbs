@@ -31,16 +31,7 @@ commands:
           to: 's3://${S3_BUCKET}/'
           overwrite: true
 
-jobs:
-
   fetch_dependencies:
-    parameters:
-      node-version:
-        type: string
-        default: *default_node_version
-    working_directory: ~/tmp
-    docker:
-      - image: circleci/node:<< parameters.node-version >>
     steps:
       - checkout
       - add_ssh_keys
@@ -66,6 +57,20 @@ jobs:
           root: .
           paths:
             - .
+
+
+jobs:
+
+  fetch_dependencies:
+    parameters:
+      node-version:
+        type: string
+        default: *default_node_version
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:<< parameters.node-version >>
+    steps:
+      - fetch_dependencies
 
   test:
     parameters:
