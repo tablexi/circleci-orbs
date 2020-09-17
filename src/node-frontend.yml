@@ -1,0 +1,89 @@
+
+description: "A set of standard steps for javascript/typescript frontend apps which we use for projects at Table XI"
+version: 2.1
+
+orbs:
+  aws-s3: circleci/aws-s3@1.0.11
+
+executors:
+  node:
+    parameters:
+      node-version:
+        type: string
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:<< parameters.node-version >>
+
+commands:
+  deploy_s3:
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: CI=false npm run build
+      - aws-s3/sync:
+          from: build/static/
+          to: 's3://${S3_BUCKET}/static/'
+          overwrite: true
+      - aws-s3/sync:
+          from: build/
+          to: 's3://${S3_BUCKET}/'
+          overwrite: true
+
+jobs:
+
+  fetch_dependencies:
+    parameters:
+      node-version:
+        type: string
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:<< parameters.node-version >>
+    steps:
+      - checkout
+      - add_ssh_keys
+      - run:
+          name: Keyscan Github (HACK)
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run: git submodule update --init --recursive
+      - run:
+          name: Setup Environment Variables
+          command: |
+            echo 'export REACT_APP_CODE_VERSION="$CIRCLE_SHA1"' >> $BASH_ENV
+            echo 'export REACT_APP_BRANCH="$CIRCLE_BRANCH"' >> $BASH_ENV
+      - restore_cache:
+          key: v1-npm-{{ checksum "package.json" }}-{{checksum "package-lock.json" }}
+      - run:
+          name: Install node dependencies
+          command: '[ ! -d node_modules ] && npm ci --loglevel warn --yes || echo package.json and package-lock.json unchanged. Using cache.'
+      - save_cache:
+          key: v1-npm-{{ checksum "package.json" }}-{{checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test:
+    parameters:
+      node-version:
+        type: string
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:<< parameters.node-version >>
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run test
+
+  lint:
+    parameters:
+      node-version:
+        type: string
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:<< parameters.node-version >>
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run lint
