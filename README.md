@@ -398,9 +398,9 @@ orbs:
   tablexi: tablexi/standard@dev:first
 ```
 
-### Using config packing to make it an inline orb
+### Using config packing to generate an inline orb
 - Copy your app's `.circleci/config.yml` to `src/config.yml`
-- Add `orbs`/`tablexi` keys to the top level of `src/standard.yml`:
+- Add `orbs`/`tablexi` keys to the top level of `src/standard.yml` and indent everything below 4 spaces:
   ```
   orbs:
     tablexi:
