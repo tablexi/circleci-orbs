@@ -18,6 +18,7 @@ These orbs provide the following Jobs:
 - `haml_lint`: run the haml-lint command
 - `rspec`: Run Rspec after waiting for db and loading schema
 - `teaspoon`: Run teaspoon after waiting for db and loading schema
+- `check_annotate`: check to ensure that running `rake annotate` doesn't result in changes to any files.
 
 These orbs provide the following commands:
 
@@ -104,6 +105,16 @@ So you can validate if your usage of orbs is correct, without having to check-in
     circleci config validate .circleci/config.yml
 
 ## What is each job, and how to use it
+
+### check_annotate
+
+Check to see that the `annotate` gem doesn't need to modify any files.
+
+NOTE: In order to run this command, you must:
+- Have the `annotate` gem in the `group :development, :test` block of `Gemfile`
+- Modify the `auto_annotate_models.rake` to allow it to run in `Rails.env.test?`
+
+This takes an optional parameter of `mysql_db_type`
 
 ### check_db_schema
 
