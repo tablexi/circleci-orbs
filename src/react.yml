@@ -23,9 +23,11 @@ commands:
           at: ~/tmp
       - run: CI=false npm run build
       - aws-s3/sync:
+          arguments: '--delete'
           from: build/static/
           to: 's3://${S3_BUCKET}/static/'
       - aws-s3/sync:
+          arguments: '--delete'
           from: build/
           to: 's3://${S3_BUCKET}/'
 
