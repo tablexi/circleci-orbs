@@ -4,7 +4,7 @@ version: 2.1
 default_node_version: &default_node_version 14.8.0
 
 orbs:
-  aws-s3: circleci/aws-s3@1.0.11
+  aws-s3: circleci/aws-s3@2.0.0
 
 executors:
   node:
@@ -25,11 +25,9 @@ commands:
       - aws-s3/sync:
           from: build/static/
           to: 's3://${S3_BUCKET}/static/'
-          overwrite: true
       - aws-s3/sync:
           from: build/
           to: 's3://${S3_BUCKET}/'
-          overwrite: true
 
   fetch_dependencies:
     steps:
