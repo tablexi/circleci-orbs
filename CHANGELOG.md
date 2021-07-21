@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Add `check_annotate` job, to help ensure that annotations stay up to date on projects
+- Upgrade `aws-s3` version within `react` orb to 2.0.0
 
 ## [0.0.9] - 2020-09-03
 
