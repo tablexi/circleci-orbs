@@ -435,7 +435,7 @@ To publish production-versions of the orbs, you must be a TXI Admin.
 
 For more details: https://github.com/CircleCI-Public/config-preview-sdk/blob/master/docs/orbs-authoring.md
 
-Before publishing, please consider updating the CHANGELOG.md.
+Before publishing, please consider updating the CHANGELOG-standard.md or CHANGELOG-react.md or CHANGELOG-node.md as appropriate.
 
 Command to publish the current `dev` version:
 
