@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.11] - 2022-02-03
+
+- Add install_bundler step to install correct version of bundler before running any bundler commands. Leverage this in all other jobs where we use bundler
+- Add option to install browsers before running rspec commands
+- Add option to install phantomjs before running rspec commands
+- Update load_db_schema step to also install mysql libraries and create the database before loading schema
+
 ## [0.0.10] - 2021-08-23
 
 - Add `check_annotate` job, to help ensure that annotations stay up to date on projects
