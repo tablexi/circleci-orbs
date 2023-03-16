@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.12] - 2023-03-16
+
+- Add `apt install -y ca-certificates` before installing `tzdata`
+- Upgrade to `circleci/browser-tools@1.4.1`
+
 ## [0.0.11] - 2022-02-03
 
 - Add install_bundler step to install correct version of bundler before running any bundler commands. Leverage this in all other jobs where we use bundler
