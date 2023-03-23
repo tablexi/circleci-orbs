@@ -1,7 +1,7 @@
 description: "A set of standard steps which we use for projects at Table XI"
 version: 2.1
 orbs:
-  browser-tools: circleci/browser-tools@1.1
+  browser-tools: circleci/browser-tools@1.4.1
 commands:
   wait_for_other_builds:
     description: "Ensure no earlier numbered job (of this branch) is running"
@@ -41,7 +41,7 @@ commands:
         type: boolean
         default: false
     steps:
-      - run: sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y tzdata
+      - run: sudo apt install -y ca-certificates && sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y tzdata
       # Install the database library, so that we can run rake db:structure:load
       - when:
           condition: << parameters.mysql_db_type >>
