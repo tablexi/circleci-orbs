@@ -1,7 +1,7 @@
 description: "A set of standard steps which we use for projects at Table XI"
 version: 2.1
 orbs:
-  browser-tools: circleci/browser-tools@1.4.1
+  browser-tools: circleci/browser-tools@1.4.6
 commands:
   wait_for_other_builds:
     description: "Ensure no earlier numbered job (of this branch) is running"
